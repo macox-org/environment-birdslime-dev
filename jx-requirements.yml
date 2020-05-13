@@ -1,40 +1,105 @@
 autoUpdate:
   enabled: true
-  schedule: '0 0 * * *'
+  schedule: 0 0 * * *
+bootConfigURL: https://github.com/cloudbees/arcalos-boot-config.git
 cluster:
-  clusterName: ""
-  environmentGitOwner: ""
-  project: ""
+  azure: {}
+  chartRepository: http://bucketrepo/bucketrepo/charts/
+  clusterName: birdslime
+  environmentGitOwner: macox-org
+  environmentGitPublic: true
+  externalDNSSAName: birdslime-dn
+  gitKind: github
+  gitName: github
+  gitPublic: true
+  gitServer: https://github.com
+  gke:
+    projectNumber: "750820992128"
+  kanikoSAName: birdslime-ko
+  namespace: jx
+  project: cbjx-birdslime
   provider: gke
-  zone: ""
-gitops: true
-githubApp:
-  enabled: false
-  url: ""
-  schedule: '0 0 * * *'
+  registry: gcr.io
+  vaultName: birdslime
+  vaultSAName: birdslime-vt
+  zone: us-central1-c
 environments:
-- key: dev
-- key: staging
-- key: production
+- ingress:
+    cloud_dns_secret_name: external-dns-gcp-sa
+    domain: cbjx-birdslime.staging-jxaas.live
+    domainIssuerURL: https://jx-tenant-service-jx.mgmt.staging-jxaas.live
+    externalDNS: true
+    namespaceSubDomain: -jx.
+    tls:
+      email: jenkins-x@cloudbees.com
+      enabled: true
+      production: false
+  key: dev
+  repository: environment-birdslime-dev
+- ingress:
+    domain: ""
+    externalDNS: false
+    namespaceSubDomain: ""
+    tls:
+      email: ""
+      enabled: false
+      production: false
+  key: staging
+  repository: environment-birdslime-staging
+- ingress:
+    domain: ""
+    externalDNS: false
+    namespaceSubDomain: ""
+    tls:
+      email: ""
+      enabled: false
+      production: false
+  key: production
+  repository: environment-birdslime-production
+githubApp:
+  enabled: true
+  schedule: 0 0 * * *
+  url: https://lighthouse-githubapp-jx.mgmt.staging-jxaas.live
+gitops: true
 ingress:
-  domain: ""
+  cloud_dns_secret_name: external-dns-gcp-sa
+  domain: cbjx-birdslime.staging-jxaas.live
+  domainIssuerURL: https://jx-tenant-service-jx.mgmt.staging-jxaas.live
   externalDNS: true
+  namespaceSubDomain: -jx.
   tls:
     email: jenkins-x@cloudbees.com
     enabled: true
     production: false
 kaniko: true
+repository: bucketrepo
 secretStorage: vault
 storage:
+  backup:
+    enabled: true
+    url: gs://cbjx-birdslime-backup
   logs:
-    enabled: false
-    url: ""
+    enabled: true
+    url: gs://cbjx-birdslime-lts
   reports:
     enabled: false
     url: ""
   repository:
-    enabled: false
-    url: ""
+    enabled: true
+    url: gs://cbjx-birdslime-repository
+vault:
+  aws: {}
+  bucket: cbjx-birdslime-vault
+  key: birdslime-db16b1c38c27-crypto-key
+  keyring: birdslime-db16b1c38c27-keyring
+  name: birdslime
+  serviceAccount: birdslime-vt
 velero:
   namespace: velero
-webhook: prow
+  schedule: ""
+  serviceAccount: birdslime-vo
+  ttl: ""
+versionStream:
+  ref: v0.0.418
+  url: https://github.com/cloudbees/arcalos-jenkins-x-versions.git
+webhook: lighthouse

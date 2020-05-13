@@ -1,0 +1,12 @@
+adminUser:
+  password: vault:birdslime/adminUser:password
+  username: admin
+dashboardUrl: https://dashboard.staging-jxaas.live
+enableDocker: false
+pipelineUser:
+  email: arcalos-admin@googlegroups.com
+  token: vault:birdslime/pipelineUser:token
+  username: cloudbees-ci-cd-staging[bot]
+prow:
+  hmacToken: vault:birdslime/prow:hmacToken
+segmentWriteKey: vault:birdslime:segmentWriteKey
